@@ -5,7 +5,7 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import App from "./App.tsx";
-import { SnackbarProvider } from "./context/SnackBarProvidert.tsx";
+import { SnackbarProvider } from "./context/SnackBarProvider.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <SnackbarProvider>
