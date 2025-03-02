@@ -1,16 +1,19 @@
 import { Controller, useForm } from "react-hook-form";
-import { Box, Button, Container, Grid2, Typography } from "@mui/material";
+import { Box, Button, Grid2, Paper, Typography } from "@mui/material";
 import { FC, useMemo } from "react";
 import { renderFieldComponent } from "./RenderFormField";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldOptions } from "../../types/FieldTypes";
 import generateSchemaFromFields from "../../schemas/validationSchemas";
+import useAddForm from "../../hooks/api/forms/useAddForm";
 
 interface DynamicFormProps {
   form: FieldOptions;
 }
 
 const DynamicForm: FC<DynamicFormProps> = ({ form }) => {
+  const { addForm, loading } = useAddForm();
+
   const schema = useMemo(() => {
     return generateSchemaFromFields(form);
   }, [form]);
@@ -23,16 +26,15 @@ const DynamicForm: FC<DynamicFormProps> = ({ form }) => {
     resolver: zodResolver(schema),
   });
 
-  console.log("errors", errors);
-
   const fields = form.fields;
 
   const onSubmit = (data: any) => {
     console.log(data);
+    addForm({ name: form.title, fields: data }).then((res) => console.log("added form", res));
   };
 
   return (
-    <Container maxWidth="sm">
+    <Paper sx={{ padding: 2 }}>
       <Typography variant="h5" gutterBottom>
         {form.title}
       </Typography>
@@ -58,11 +60,19 @@ const DynamicForm: FC<DynamicFormProps> = ({ form }) => {
             );
           })}
         </Grid2>
-        <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
+        <Button
+          type="submit"
+          disabled={loading}
+          loading={loading}
+          variant="contained"
+          color="primary"
+          fullWidth
+          sx={{ mt: 2 }}
+        >
           Submit
         </Button>
       </Box>
-    </Container>
+    </Paper>
   );
 };
 
