@@ -1,6 +1,6 @@
 import "./App.css";
 import DynamicFormPage from "./pages/DynamicFormPage";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 function App() {
   return (
@@ -9,8 +9,19 @@ function App() {
         width: "100vw",
         height: "100vh",
         overflow: "auto",
+        padding: 1,
       }}
     >
+      <Typography
+        variant="h3"
+        sx={{
+          fontWeight: "bold",
+          mb: 2,
+        }}
+      >
+        Dynamic Form Submission
+      </Typography>
+
       <DynamicFormPage />
     </Box>
   );
