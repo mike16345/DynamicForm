@@ -45,7 +45,7 @@ const DynamicForm: FC<DynamicFormProps> = ({ form }) => {
         </Button>
       </Box>
       <Box component={"form"} noValidate onSubmit={handleSubmit(onSubmit)}>
-        <Grid2 container spacing={2} columns={2}>
+        <Grid2 container alignItems={"center"} spacing={2} columns={2}>
           {fields.map((field, index) => {
             const isLastInOddRow = index === fields.length - 1 && fields.length % 2 !== 0;
 

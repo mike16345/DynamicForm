@@ -5,11 +5,14 @@ import UserRegistrationSchema from "../constants/Fields";
 
 const DynamicFormPage = () => {
   return (
-    <Box width={"100%"} height={"100%"} sx={{ padding: 2 }}>
+    <Box width="100%" height="100%" sx={{ padding: 2 }}>
       <Grid2 container spacing={2}>
-        <PreviousFormsListWrapper />
-
-        <DynamicForm form={UserRegistrationSchema} />
+        <Grid2 size={{ xs: 12, md: 8 }}>
+          <DynamicForm form={UserRegistrationSchema} />
+        </Grid2>
+        <Grid2 size={{ xs: 12, md: 4 }}>
+          <PreviousFormsListWrapper />
+        </Grid2>
       </Grid2>
     </Box>
   );

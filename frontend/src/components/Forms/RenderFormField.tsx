@@ -3,12 +3,13 @@ import {
   FormControlLabel,
   Radio,
   Select,
-  Typography,
   MenuItem,
   TextField,
   FormHelperText,
   FormControl,
   TextFieldVariants,
+  Checkbox,
+  InputLabel,
 } from "@mui/material";
 import { ControllerRenderProps, FieldValues } from "react-hook-form";
 import { Field } from "../../types/FieldTypes";
@@ -43,14 +44,13 @@ export const renderFieldComponent = (
     case "select":
       return (
         <FormControl fullWidth error={!!error}>
+          <InputLabel id={field.label}>Age</InputLabel>
           <Select
             {...controllerField}
-            displayEmpty
+            labelId={field.label}
+            label={field.label}
             value={controllerField.value || ""}
             name={field.name}
-            renderValue={(value) =>
-              value ? value : <Typography color="gray">{field.label}</Typography>
-            }
           >
             {field.options?.map((option) => (
               <MenuItem key={option} value={option}>
@@ -60,6 +60,19 @@ export const renderFieldComponent = (
           </Select>
           {error && <FormHelperText>{error}</FormHelperText>}
         </FormControl>
+      );
+
+    case "checkbox":
+      return (
+        <FormControl error={!!error}>
+          <FormControlLabel control={<Checkbox {...controllerField} />} label={field.label} />
+          {error && <FormHelperText>{error}</FormHelperText>}
+        </FormControl>
+      );
+
+    case "textarea":
+      return (
+        <TextField {...commonProps} value={controllerField.value || ""} multiline minRows={4} />
       );
 
     default:
