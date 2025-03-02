@@ -8,6 +8,7 @@ import {
   TextField,
   FormHelperText,
   FormControl,
+  TextFieldVariants,
 } from "@mui/material";
 import { ControllerRenderProps, FieldValues } from "react-hook-form";
 import { Field } from "../../types/FieldTypes";
@@ -15,15 +16,15 @@ import { Field } from "../../types/FieldTypes";
 export const renderFieldComponent = (
   field: Field,
   controllerField: ControllerRenderProps<FieldValues, string>,
-  error?: string // Add an optional error message
+  error?: string
 ) => {
   const commonProps = {
     ...controllerField,
     label: field.label,
     fullWidth: true,
-    variant: "outlined",
-    error: !!error, // Apply error styling
-    helperText: error || "", // Show error message if exists
+    variant: "outlined" as TextFieldVariants,
+    error: !!error,
+    helperText: error || "",
   };
 
   switch (field.type) {
@@ -65,6 +66,7 @@ export const renderFieldComponent = (
       return (
         <TextField
           {...commonProps}
+          value={controllerField.value || ""}
           type={field.type}
           slotProps={field.type === "date" ? { inputLabel: { shrink: true } } : {}}
         />

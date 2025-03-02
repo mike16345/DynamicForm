@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldOptions } from "../../types/FieldTypes";
 import generateSchemaFromFields from "../../schemas/validationSchemas";
 import useAddForm from "../../hooks/api/forms/useAddForm";
+import { useSnackbar } from "../../context/SnackBarProvider";
 
 interface DynamicFormProps {
   form: FieldOptions;
@@ -13,31 +14,36 @@ interface DynamicFormProps {
 
 const DynamicForm: FC<DynamicFormProps> = ({ form }) => {
   const { addForm, loading } = useAddForm();
+  const { showSnackbar } = useSnackbar();
 
   const schema = useMemo(() => {
     return generateSchemaFromFields(form);
   }, [form]);
 
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm({
+  const { handleSubmit, control, reset } = useForm({
     resolver: zodResolver(schema),
   });
+
+  const handleResetForm = () => {
+    reset();
+  };
 
   const fields = form.fields;
 
   const onSubmit = (data: any) => {
-    console.log(data);
-    addForm({ name: form.title, fields: data }).then((res) => console.log("added form", res));
+    addForm({ name: form.title, fields: data }).then(() =>
+      showSnackbar({ severity: "success", message: "Form saved successfully!" })
+    );
   };
 
   return (
     <Paper sx={{ padding: 2 }}>
-      <Typography variant="h5" gutterBottom>
-        {form.title}
-      </Typography>
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+        <Typography variant="h5">{form.title}</Typography>
+        <Button onClick={handleResetForm} variant="outlined" color="secondary">
+          Reset
+        </Button>
+      </Box>
       <Box component={"form"} noValidate onSubmit={handleSubmit(onSubmit)}>
         <Grid2 container spacing={2} columns={2}>
           {fields.map((field, index) => {
@@ -48,11 +54,11 @@ const DynamicForm: FC<DynamicFormProps> = ({ form }) => {
                 <Controller
                   name={field.name}
                   control={control}
-                  render={({ field: controllerField, fieldState, formState }) => {
+                  render={({ field: controllerField, fieldState }) => {
                     return renderFieldComponent(
                       field,
                       controllerField,
-                      formState.errors[field.name]?.message
+                      fieldState.error?.message as string | undefined
                     );
                   }}
                 />
