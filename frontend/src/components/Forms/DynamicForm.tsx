@@ -2,9 +2,9 @@ import { Controller, useForm } from "react-hook-form";
 import { Box, Button, Container, Grid2, Typography } from "@mui/material";
 import { FC, useMemo } from "react";
 import { renderFieldComponent } from "./RenderFormField";
-import generateSchemaFromFields from "../../schemas/validationSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldOptions } from "../../types/FieldTypes";
+import generateSchemaFromFields from "../../schemas/validationSchemas";
 
 interface DynamicFormProps {
   form: FieldOptions;
