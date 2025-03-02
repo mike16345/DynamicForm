@@ -96,12 +96,14 @@ const generateSchemaFromFields = (form: FieldOptions) => {
 
   form.fields.forEach((field) => {
     const inferredType = inferSchemaTypeFromFormFieldType(field.type);
-    console.log("type", inferredType);
-    if (inferredType == "enum") zodSchema[field.name] = createEnumSchema(field?.options);
-    else zodSchema[field.name] = createValidationSchema(inferredType, field.validations);
+
+    if (inferredType == "enum") {
+      zodSchema[field.name] = createEnumSchema(field?.options || []);
+    } else {
+      zodSchema[field.name] = createValidationSchema(inferredType, field.validations);
+    }
   });
 
-  console.log("Generated Zod schema:", zodSchema);
   return z.object(zodSchema);
 };
 
